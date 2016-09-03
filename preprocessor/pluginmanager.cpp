@@ -408,8 +408,10 @@ bool deleteDictionary( QString directory )
 
 	dir.cdUp();
 	// FIXME: What if files are on NFS and some .nfsXXXXXXXXXXXXXXXXXXXXXXXX files are blocking directory removal ?
-	if ( !dir.rmdir( directory ) )
+	if ( !dir.rmdir( directory ) ) {
+		qWarning() << "deleteDictionary() failed on: " << directory << ".  Is this on an NFS file system?";
 		return false;
+	}
 
 	return true;
 }
