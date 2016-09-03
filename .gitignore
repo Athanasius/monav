@@ -43,3 +43,4 @@ plugins/unicodetournamenttrie/moc_uttsettingsdialog.cpp
 plugins/unicodetournamenttrie/ui_uttsettingsdialog.h
 preprocessor/moc_log.cpp
 preprocessor/moc_pluginmanager.cpp
+bin/
