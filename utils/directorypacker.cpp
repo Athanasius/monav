@@ -236,13 +236,16 @@ struct DirectoryPacker::PrivateImplementation {
 
 			initOutput();
 
-			if ( !encode() )
+			if ( !encode() ) {
+				inputFile.close();
 				return false;
+			}
 			// finish block -> only one file per block
 			if ( outputBuffer.buffer().size() != 0 ) {
 				if ( !storeOutputBlock( false ) )
 					return false;
 			}
+			inputFile.close();
 
 			qDebug() << "Compressed file:" << ( int ) ( 100.0 * ( outputFile.size() - lastSize ) / info.size() ) << "%";
 		}
