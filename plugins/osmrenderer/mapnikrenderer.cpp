@@ -264,7 +264,7 @@ bool MapnikRenderer::Preprocess( IImporter* importer, QString dir )
 			const int metaTileSize = m_settings.metaTileSize * m_settings.tileSize + 2 * m_settings.margin;
 
 			mapnik::Map map;
-			mapnik::Image32 image( metaTileSize, metaTileSize );
+			mapnik::image_32 image( metaTileSize, metaTileSize );
 			QTemporaryFile tempOut;
 			QTemporaryFile tempIn;
 			mapnik::load_map( map, m_settings.theme.toLocal8Bit().constData() );
@@ -290,7 +290,7 @@ bool MapnikRenderer::Preprocess( IImporter* importer, QString dir )
 				projection.forward( drawBottomRightGPS.longitude, drawTopLeftGPS.latitude );
 				mapnik::Envelope<double> boundingBox( drawTopLeftGPS.longitude, drawTopLeftGPS.latitude, drawBottomRightGPS.longitude, drawBottomRightGPS.latitude );
 				map.zoomToBox( boundingBox );
-				mapnik::agg_renderer<mapnik::Image32> renderer( map, image );
+				mapnik::agg_renderer<mapnik::image_32> renderer( map, image );
 				renderer.apply();
 
 				std::string data;
