@@ -27,6 +27,7 @@ along with MoNav.  If not, see <http://www.gnu.org/licenses/>.
 #include <mapnik/map.hpp>
 #include <mapnik/datasource_cache.hpp>
 #include <mapnik/projection.hpp>
+#include <mapnik/graphics.hpp>
 #include <mapnik/font_engine_freetype.hpp>
 #include <mapnik/agg_renderer.hpp>
 #include <mapnik/image_util.hpp>
@@ -288,8 +289,8 @@ bool MapnikRenderer::Preprocess( IImporter* importer, QString dir )
 				GPSCoordinate drawBottomRightGPS = drawBottomRight.ToGPSCoordinate();
 				projection.forward( drawTopLeftGPS.longitude, drawBottomRightGPS.latitude );
 				projection.forward( drawBottomRightGPS.longitude, drawTopLeftGPS.latitude );
-				mapnik::Envelope<double> boundingBox( drawTopLeftGPS.longitude, drawTopLeftGPS.latitude, drawBottomRightGPS.longitude, drawBottomRightGPS.latitude );
-				map.zoomToBox( boundingBox );
+				mapnik::box2d<double> boundingBox( drawTopLeftGPS.longitude, drawTopLeftGPS.latitude, drawBottomRightGPS.longitude, drawBottomRightGPS.latitude );
+				map.zoom_to_box( boundingBox );
 				mapnik::agg_renderer<mapnik::image_32> renderer( map, image );
 				renderer.apply();
 
