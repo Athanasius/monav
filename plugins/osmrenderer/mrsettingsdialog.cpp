@@ -24,6 +24,7 @@ along with MoNav.  If not, see <http://www.gnu.org/licenses/>.
 #include <cassert>
 #include <QtDebug>
 #include <QSettings>
+#include <QWidget>
 
 MRSettingsDialog::MRSettingsDialog( QWidget *parent ) :
 	 QWidget( parent ),
