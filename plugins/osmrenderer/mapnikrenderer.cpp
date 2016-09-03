@@ -25,6 +25,7 @@ along with MoNav.  If not, see <http://www.gnu.org/licenses/>.
 #endif
 
 #include <mapnik/map.hpp>
+#include <mapnik/config_error.hpp>
 #include <mapnik/datasource_cache.hpp>
 #include <mapnik/projection.hpp>
 #include <mapnik/graphics.hpp>
@@ -300,7 +301,7 @@ bool MapnikRenderer::Preprocess( IImporter* importer, QString dir )
 				for ( int subX = 0; subX < metaTileSizeX; ++subX ) {
 					for ( int subY = 0; subY < metaTileSizeY; ++subY ) {
 						int indexNumber = ( y + subY - info.minY ) * ( info.maxX - info.minX ) + x + subX - info.minX;
-						mapnik::image_view<mapnik::ImageData32> view = image.get_view( subX * m_settings.tileSize + m_settings.margin, subY * m_settings.tileSize + m_settings.margin, m_settings.tileSize, m_settings.tileSize );
+						mapnik::image_view<mapnik::image_data_32> view = image.get_view( subX * m_settings.tileSize + m_settings.margin, subY * m_settings.tileSize + m_settings.margin, m_settings.tileSize, m_settings.tileSize );
 						std::string result;
 						if ( !m_settings.deleteTiles || info.index[( x + subX - info.minX ) + ( y + subY - info.minY ) * ( info.maxX - info.minX )].size == 1 ) {
 							if ( m_settings.reduceColors )
