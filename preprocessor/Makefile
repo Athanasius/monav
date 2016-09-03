@@ -10,7 +10,7 @@
 
 CC            = gcc
 CXX           = g++
-CF_DEBUG      = # -ggdb3
+CF_DEBUG      = #-ggdb3
 CF_OPT	      = -O2
 CXX_OPT	      = -O3
 DEFINES       = -DQT_WEBKIT -D_7ZIP_ST -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_SHARED
