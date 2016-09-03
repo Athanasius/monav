@@ -26,6 +26,7 @@ along with MoNav.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <mapnik/map.hpp>
 #include <mapnik/datasource_cache.hpp>
+#include <mapnik/projection.hpp>
 #include <mapnik/font_engine_freetype.hpp>
 #include <mapnik/agg_renderer.hpp>
 #include <mapnik/image_util.hpp>
