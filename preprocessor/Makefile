@@ -10,11 +10,15 @@
 
 CC            = gcc
 CXX           = g++
+CF_DEBUG      = # -ggdb3
+CF_OPT	      = -O2
+CXX_OPT	      = -O3
 DEFINES       = -DQT_WEBKIT -D_7ZIP_ST -DQT_NO_DEBUG -DQT_CORE_LIB -DQT_SHARED
-CFLAGS        = -m64 -pipe -O2 -pthread -Wall -W -D_REENTRANT $(DEFINES)
-CXXFLAGS      = -m64 -pipe -O3 -march=native -Wno-unused-function -fopenmp -pthread -Wall -W -D_REENTRANT $(DEFINES)
+DEFINES       = -DQT_WEBKIT -D_7ZIP_ST -DQT_CORE_LIB -DQT_SHARED
+CFLAGS        = -m64 -pipe $(CF_DEBUG) $(CF_OPT) -pthread -Wall -W -D_REENTRANT $(DEFINES)
+CXXFLAGS      = -m64 -pipe $(CF_DEBUG) $(CXX_OPT) -march=native -Wno-unused-function -fopenmp -pthread -Wall -W -D_REENTRANT $(DEFINES)
 INCPATH       = -I/usr/share/qt4/mkspecs/linux-g++-64 -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4 -I.. -I/usr/include/libxml2 -I.
-LINK          = g++
+LINK          = g++ -ggdb3
 LFLAGS        = -m64 -Wl,-O1
 LIBS          = $(SUBLIBS)  -L/usr/lib/x86_64-linux-gnu -L../bin/plugins_preprocessor -lmapnikrenderer -lcontractionhierarchies -lgpsgrid -losmrenderer -lqtilerenderer -lunicodetournamenttrie -losmimporter -ltestimporter -fopenmp -lmapnik -lbz2 -lz -lxml2 -lprotobuf -pthread -lQtCore -lQtGui -lpthread 
 AR            = ar cqs

@@ -231,15 +231,19 @@ int main(int argc, char *argv[])
 {
 	QCoreApplication a(argc, argv);
 
+	// qDebug() << "console-main: STARTUP";
+
 	CommandLineParser parser;
 	Commands commands;
 
+	// qDebug() << "console-main: registerDataSink";
 	parser.registerDataSink( &commands );
 	if ( !parser.parse( true ) ) {
 		a.quit();
 		return -1;
 	}
 
+	// qDebug() << "console-main: setMessageTypeEnabled";
 	Log::instance()->setMessageTypeEnabled( QtDebugMsg, commands.verbose );
 	PluginManager* pluginManager = PluginManager::instance();
 	pluginManager->loadPlugins();
@@ -253,6 +257,7 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
+	// qDebug() << "console-main: settings";
 	if ( !commands.settings.isEmpty() ) {
 		QSettings settings( commands.settings, QSettings::IniFormat );
 		pluginManager->loadSettings( &settings );
@@ -274,17 +279,20 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	// qDebug() << "console-main: parse";
 	if ( !parser.parse() ) {
 		a.quit();
 		return -1;
 	}
 
+	// qDebug() << "console-main: help";
 	if ( commands.help ) {
 		parser.displayHelp();
 		a.quit();
 		return 0;
 	}
 
+	// qDebug() << "console-main: importing";
 	if ( commands.importing ) {
 		if ( !pluginManager->processImporter( commands.importer ) ) {
 			qCritical() << "Failed to import";
@@ -293,14 +301,17 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	// qDebug() << "console-main: routing";
 	if ( !commands.routingModule.isEmpty() ) {
-		if ( !pluginManager->processRoutingModule( commands.routingModule, commands.importer, commands.router, commands.gpsLookup ) ) {
+		bool ret;
+		if ( !( ret = pluginManager->processRoutingModule( commands.routingModule, commands.importer, commands.router, commands.gpsLookup ) ) ) {
 			qCritical() << "Failed to preprocess routing module";
 			a.quit();
 			return -1;
 		}
 	}
 
+	// qDebug() << "console-main: rendering";
 	if ( !commands.renderingModule.isEmpty() ) {
 		if ( !pluginManager->processRenderingModule( commands.renderingModule, commands.importer, commands.renderer ) ) {
 			qCritical() << "Failed to preprocess rendering module";
@@ -309,6 +320,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	// qDebug() << "console-main: address lookup";
 	if ( !commands.addressLookupModule.isEmpty() ) {
 		if ( !pluginManager->processAddressLookupModule( commands.addressLookupModule, commands.importer, commands.addressLookup ) ) {
 			qCritical() << "Failed to preprocess address lookup module";
@@ -317,6 +329,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	// qDebug() << "console-main: commands.config";
 	if ( commands.config ) {
 		if ( !pluginManager->writeConfig( commands.importer ) ) {
 			qCritical() << "Failed to write main map config";
@@ -325,6 +338,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	// qDebug() << "console-main: commands.del";
 	if ( commands.del ) {
 		if ( !pluginManager->deleteTemporaryFiles() ) {
 			qCritical() << "Failed to delete temporary files";
@@ -333,6 +347,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	// qDebug() << "console-main: quit";
 	a.quit();
 	return 0;
 }

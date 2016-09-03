@@ -351,6 +351,7 @@ void PreprocessingWindow::nextTask()
 			taskFinished( false );
 		break;
 	case TaskRouting:
+		qDebug << "preprocessingwindow: processRoutingModule()";
 		if ( !PluginManager::instance()->processRoutingModule(
 				m_ui->routingName->text(),
 				m_ui->importerComboBox->currentText(),

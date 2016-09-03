@@ -407,6 +407,7 @@ bool deleteDictionary( QString directory )
 		QFile::remove( dir.absoluteFilePath( filename ) );
 
 	dir.cdUp();
+	// FIXME: What if files are on NFS and some .nfsXXXXXXXXXXXXXXXXXXXXXXXX files are blocking directory removal ?
 	if ( !dir.rmdir( directory ) )
 		return false;
 
@@ -503,11 +504,14 @@ bool PluginManager::processImporter( QString plugin, bool async )
 
 bool PluginManager::processRoutingModule( QString moduleName, QString importer, QString router, QString gpsLookup, bool async )
 {
+	// qDebug() << "PluginManager::processRoutingModule: ...";
 	int importerIndex = d->findPlugin( d->importerPlugins, importer );
 	int routerIndex = d->findPlugin( d->routerPlugins, router );
 	int gpsLookupIndex = d->findPlugin( d->gpsLookupPlugins, gpsLookup );
-	if ( importerIndex == -1 || routerIndex == -1 || gpsLookupIndex == -1 )
+	if ( importerIndex == -1 || routerIndex == -1 || gpsLookupIndex == -1 ) {
+		qDebug() << "PluginManager::processRoutingModule: All -1: importerIndex, routerIndex, gpsLookupIndex";
 		return false;
+	}
 
 	d->importerPlugins[importerIndex]->SetOutputDirectory( fileInDirectory( d->outputDirectory, "tmp") );
 
@@ -536,6 +540,7 @@ bool PluginManager::processRoutingModule( QString moduleName, QString importer, 
 	}
 
 	// run async and return
+	// qDebug() << "PluginManager::processRoutingModule: Dispatching to plugins...";
 	d->processingFuture =
 			QtConcurrent::run( runRouting, dir.path(), d->importerPlugins[importerIndex], d->routerPlugins[routerIndex], d->gpsLookupPlugins[gpsLookupIndex], PackerInfo( d->packaging, d->dictionarySize, d->blockSize ) );
 	d->processingWatcher.setFuture( d->processingFuture );
